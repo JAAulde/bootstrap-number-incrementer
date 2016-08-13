@@ -1,0 +1,9 @@
+# Dependency installations
+bower_components
+node_modules
+
+# Tool output
+npm-debug.log
+
+# OS Junk
+.DS_Store
