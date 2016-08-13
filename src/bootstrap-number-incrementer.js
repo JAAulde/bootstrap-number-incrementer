@@ -69,8 +69,6 @@
         return return_value;
     }
 
-    // override .attr to maintain width for `range` factor when min or max are changed
-
     $.fn.numberIncrementer = function (opts) {
         switch (opts) {
         case 'increment':
