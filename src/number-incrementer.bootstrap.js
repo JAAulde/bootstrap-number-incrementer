@@ -3,14 +3,13 @@
 
     var parseInt = context.parseInt,
         $ = context.jQuery,
+        template_manager = context.template_manager,
         baseFontSize = parseFloat($('body').css('font-size'), 10),
         jQProp = $.fn.prop,
         jQAttr = $.fn.attr,
         getWrapper = function () {
             if (!getWrapper.$) {
-                getWrapper.$ = $(
-                    $.trim($('#bs_number_incrementer_tpl').text())
-                );
+                getWrapper.$ = $(template_manager.get('partials/wrapper.html'));
             }
 
             return getWrapper.$.clone();
