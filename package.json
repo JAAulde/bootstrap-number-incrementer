@@ -1,0 +1,24 @@
+{
+  "name": "bootstrap-number-incrementer",
+  "version": "1.0.0",
+  "description": "A jQuery/Boostrap based widget for use on text and number inputs to turn them into Bootstrap input groups with plus and minus buttons for incrementing and decrementing the input's numeric value.",
+  "main": "dist/number-incrementer.bootstrap.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:JAAulde/bootstrap-number-incrementer.git"
+  },
+  "author": "Jim Auldridge <auldridgej@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "del": "^2.2.1",
+    "gulp": "^3.9.1",
+    "gulp-jslint": "^1.0.1",
+    "gulp-load-plugins": "^1.2.4",
+    "gulp-inject-version": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.4"
+  }
+}
