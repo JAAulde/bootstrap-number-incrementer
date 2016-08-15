@@ -17,7 +17,6 @@
     var parseInt = context.parseInt,
         $ = context.jQuery,
         template_manager = context.template_manager,
-        baseFontSize = parseFloat($('body').css('font-size'), 10),
         jQProp = $.fn.prop,
         jQAttr = $.fn.attr,
         getWrapper = function () {
@@ -36,11 +35,11 @@
 
             switch (options.width_factor) {
             case 'range':
-                    min = (input.attr('min') || '').length;
-                    max = (input.attr('max') || '').length;
-                    len = ((min > max ? min : max) || 1);
+                min = (input.attr('min') || '').length;
+                max = (input.attr('max') || '').length;
+                len = (min > max ? min : max);
 
-                    wrapper.width((7 + len) + 'em');
+                wrapper.width((7 + (len || 1)) + 'em');
                 break;
 
             case 'dynamic':
@@ -79,7 +78,7 @@
         }
 
         return return_value;
-    }
+    };
 
     $.fn.numberIncrementer = function (opts) {
         switch (opts) {
@@ -119,7 +118,7 @@
                 if (!input.prop('disabled')) {
                     value = parseInt(input.val(), 10);
                     if (isNaN(value)) {
-                        value = 0
+                        value = 0;
                     }
 
                     max_value = parseInt(input.attr('max'), 10);
@@ -146,48 +145,47 @@
                     .off('change.bs-number-incrementer')
                     .removeClass('bs-number-incremented')
                     .attr('type', widgetData.original_type)
-                    .removeData('widgetData')
+                    .removeData('widgetData');
             });
             break;
         default:
             var options = $.extend({}, defaults, (opts || {}));
 
-            this.filter('input[type="text"], input[type="number"]')
-                .not('.bs-number-incremented')
-                    .each(function () {
-                        var input = $(this),
-                            wrapper = getWrapper(),
-                            widgetData = {
-                                original_type: input.attr('type'),
-                                options: options
-                            };
+            this.filter('input[type="text"], input[type="number"]').not('.bs-number-incremented')
+                .each(function () {
+                    var input = $(this),
+                        wrapper = getWrapper(),
+                        widgetData = {
+                            original_type: input.attr('type'),
+                            options: options
+                        };
 
-                        input.replaceWith(wrapper);
+                    input.replaceWith(wrapper);
 
-                        wrapper.find('span.bs-number-incremented-target:first').replaceWith(input);
+                    wrapper.find('span.bs-number-incremented-target:first').replaceWith(input);
 
-                        input
-                            .prop('disabled', input.prop('disabled'))
-                            .data('widgetData', widgetData)
-                            .attr('type', 'text')
-                            .addClass('bs-number-incremented')
-                            .on('change.bs-number-incrementer', function () {
-                                if (input.data('widgetData').options.width_factor === 'dynamic') {
-                                    setWrapperWidth(input.closest('div.bs-number-incrementer'));
-                                }
-                            });
+                    input
+                        .prop('disabled', input.prop('disabled'))
+                        .data('widgetData', widgetData)
+                        .attr('type', 'text')
+                        .addClass('bs-number-incremented')
+                        .on('change.bs-number-incrementer', function () {
+                            if (input.data('widgetData').options.width_factor === 'dynamic') {
+                                setWrapperWidth(input.closest('div.bs-number-incrementer'));
+                            }
+                        });
 
-                        setWrapperWidth(wrapper);
+                    setWrapperWidth(wrapper);
 
-                        wrapper.find('button[data-operation]')
-                            .on('click', function () {
-                                var operation = $(this).data('operation');
+                    wrapper.find('button[data-operation]')
+                        .on('click', function () {
+                            var operation = $(this).data('operation');
 
-                                if ((['increment', 'decrement']).indexOf(operation) >= 0) {
-                                    input.numberIncrementer(operation);
-                                }
-                            });
-                    });
+                            if ((['increment', 'decrement']).indexOf(operation) >= 0) {
+                                input.numberIncrementer(operation);
+                            }
+                        });
+                });
             break;
         }
 
