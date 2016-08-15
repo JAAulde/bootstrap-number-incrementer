@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "jquery": "1.9.1 - 3",
-    "bootstrap": "~3.3.7"
+    "bootstrap": "~3.3.7",
+    "jaaulde-template-manager": "~1.0.0"
   }
 }
