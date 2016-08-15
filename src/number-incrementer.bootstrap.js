@@ -1,3 +1,16 @@
+/* jslint */
+
+/**
+ * @file A jQuery/Boostrap based widget for use on text and number inputs to
+ *       turn them into Bootstrap input groups with plus and minus buttons for
+ *       incrementing and decrementing the input's numeric value.
+ * @version %%GULP_INJECT_VERSION%%
+ * @copyright Jim Auldridge <auldridgej@gmail.com> 2016
+ * @license MIT
+ * @see {@link https://github.com/JAAulde/bootstrap-number-incrementer|GitHub Repository}
+ * @see {@link http://getbootstrap.com/javascript/#modals|Bootstrap Modal}
+ * @see {@link https://api.jquery.com/category/deferred-object/|jQuery deferred}
+ */
 (function (context) {
     'use strict';
 
