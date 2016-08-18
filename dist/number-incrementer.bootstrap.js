@@ -19,6 +19,12 @@
         template_manager = context.template_manager,
         jQProp = $.fn.prop,
         jQAttr = $.fn.attr,
+        consts = {
+            CLASS_NAME_INPUT: 'bs-number-incremented',
+            CLASS_NAME_WRAPPER: 'bs-number-incrementer',
+            NAMESPACE_EVENTS: 'bs-number-incrementer',
+            DATA_PROPERTY_WIDGET_DATA: 'widgetData'
+        },
         getWrapper = function () {
             if (!getWrapper.$) {
                 getWrapper.$ = $(template_manager.get('partials/wrapper.html'));
@@ -27,8 +33,8 @@
             return getWrapper.$.clone();
         },
         setWrapperWidth = function (wrapper) {
-            var input = wrapper.find('input.bs-number-incremented'),
-                options = input.data('widgetData').options,
+            var input = wrapper.find('input.' + consts.CLASS_NAME_INPUT),
+                options = input.data(consts.DATA_PROPERTY_WIDGET_DATA).options,
                 min,
                 max,
                 len;
@@ -37,7 +43,7 @@
             case 'range':
                 min = (input.attr('min') || '').length;
                 max = (input.attr('max') || '').length;
-                len = (min > max ? min : max) * 0.7;
+                len = (min > max ? min : max) * 0.75;
 
                 wrapper.width((7 + (len || 1)) + 'em');
                 break;
@@ -60,9 +66,9 @@
         var args = arguments;
 
         if (args.length === 2 && args[0] === 'disabled') {
-            this.filter('input.bs-number-incremented').each(function () {
+            this.filter('input.' + consts.CLASS_NAME_INPUT).each(function () {
                 var input = $(this);
-                $.fn.prop.apply(input.closest('div.bs-number-incrementer').find('button'), args);
+                $.fn.prop.apply(input.closest('div.' + consts.CLASS_NAME_WRAPPER).find('button'), args);
             });
         }
 
@@ -74,9 +80,9 @@
             return_value = jQAttr.apply(this, args);
 
         if (args.length === 2 && (['min', 'max']).indexOf(args[0]) > -1) {
-            this.filter('input.bs-number-incremented').each(function () {
+            this.filter('input.' + consts.CLASS_NAME_INPUT).each(function () {
                 var input = $(this);
-                setWrapperWidth(input.closest('div.bs-number-incrementer'));
+                setWrapperWidth(input.closest('div.' + consts.CLASS_NAME_WRAPPER));
             });
         }
 
@@ -86,7 +92,7 @@
     $.fn.numberIncrementer = function (opts) {
         switch (opts) {
         case 'increment':
-            this.filter('input.bs-number-incremented').each(function () {
+            this.filter('input.' + consts.CLASS_NAME_INPUT).each(function () {
                 var input = $(this),
                     value,
                     min_value,
@@ -112,7 +118,7 @@
             break;
 
         case 'decrement':
-            this.filter('input.bs-number-incremented').each(function () {
+            this.filter('input.' + consts.CLASS_NAME_INPUT).each(function () {
                 var input = $(this),
                     value,
                     max_value,
@@ -138,13 +144,13 @@
             break;
 
         case 'destroy':
-            this.filter('input.bs-number-incremented').each(function () {
+            this.filter('input.' + consts.CLASS_NAME_INPUT).each(function () {
                 var input = $(this),
-                    widgetData = input.data('widgetData'),
+                    widgetData = input.data(consts.DATA_PROPERTY_WIDGET_DATA),
                     $m,
                     p;
 
-                input.closest('div.bs-number-incrementer').replaceWith(input);
+                input.closest('div.' + consts.CLASS_NAME_WRAPPER).replaceWith(input);
 
                 for ($m in widgetData.originals) {
                     if (Object.prototype.hasOwnProperty.call(widgetData.originals, $m)) {
@@ -157,15 +163,15 @@
                 }
 
                 input
-                    .off('change.bs-number-incrementer')
-                    .removeData('widgetData')
-                    .removeClass('bs-number-incremented');
+                    .off('change.' + consts.NAMESPACE_EVENTS)
+                    .removeData(consts.DATA_PROPERTY_WIDGET_DATA)
+                    .removeClass(consts.CLASS_NAME_INPUT);
             });
             break;
         default:
             var options = $.extend({}, defaults, (opts || {}));
 
-            this.filter('input[type="text"], input[type="number"]').not('.bs-number-incremented')
+            this.filter('input[type="text"], input[type="number"]').not('.' + consts.CLASS_NAME_INPUT)
                 .each(function () {
                     var input = $(this),
                         wrapper = getWrapper(),
@@ -187,15 +193,15 @@
 
                     input
                         .prop('disabled', input.prop('disabled'))
-                        .data('widgetData', widgetData)
                         .attr('type', 'text')
                         .css('text-align', (options.width_factor === 'dynamic' ? 'center' : 'right'))
-                        .addClass('bs-number-incremented')
-                        .on('change.bs-number-incrementer', function () {
-                            if (input.data('widgetData').options.width_factor === 'dynamic') {
-                                setWrapperWidth(input.closest('div.bs-number-incrementer'));
+                        .addClass(consts.CLASS_NAME_INPUT)
+                        .on('change.' + consts.NAMESPACE_EVENTS, function () {
+                            if (input.data(consts.DATA_PROPERTY_WIDGET_DATA).options.width_factor === 'dynamic') {
+                                setWrapperWidth(input.closest('div.' + consts.CLASS_NAME_WRAPPER));
                             }
-                        });
+                        })
+                        .data(consts.DATA_PROPERTY_WIDGET_DATA, widgetData);
 
                     setWrapperWidth(wrapper);
 
