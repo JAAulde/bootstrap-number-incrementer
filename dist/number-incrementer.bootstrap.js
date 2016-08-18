@@ -37,7 +37,7 @@
             case 'range':
                 min = (input.attr('min') || '').length;
                 max = (input.attr('max') || '').length;
-                len = (min > max ? min : max);
+                len = (min > max ? min : max) * 0.7;
 
                 wrapper.width((7 + (len || 1)) + 'em');
                 break;
@@ -47,6 +47,9 @@
 
                 wrapper.width((7 + len) + 'em');
                 break;
+
+            //default
+            //  style it yourself externally
             }
         },
         defaults = {
@@ -137,15 +140,26 @@
         case 'destroy':
             this.filter('input.bs-number-incremented').each(function () {
                 var input = $(this),
-                    widgetData = input.data('widgetData');
+                    widgetData = input.data('widgetData'),
+                    $m,
+                    p;
 
                 input.closest('div.bs-number-incrementer').replaceWith(input);
 
+                for ($m in widgetData.originals) {
+                    if (Object.prototype.hasOwnProperty.call(widgetData.originals, $m)) {
+                        for (p in widgetData.originals[$m]) {
+                            if (Object.prototype.hasOwnProperty.call(widgetData.originals[$m], p)) {
+                                input[$m](p, widgetData.originals[$m][p]);
+                            }
+                        }
+                    }
+                }
+
                 input
                     .off('change.bs-number-incrementer')
-                    .removeClass('bs-number-incremented')
-                    .attr('type', widgetData.original_type)
-                    .removeData('widgetData');
+                    .removeData('widgetData')
+                    .removeClass('bs-number-incremented');
             });
             break;
         default:
@@ -156,7 +170,14 @@
                     var input = $(this),
                         wrapper = getWrapper(),
                         widgetData = {
-                            original_type: input.attr('type'),
+                            originals: {
+                                attr: {
+                                    type: input.attr('type')
+                                },
+                                css: {
+                                    "text-align": (input.css('text-align') || 'start')
+                                }
+                            },
                             options: options
                         };
 
@@ -168,6 +189,7 @@
                         .prop('disabled', input.prop('disabled'))
                         .data('widgetData', widgetData)
                         .attr('type', 'text')
+                        .css('text-align', (options.width_factor === 'dynamic' ? 'center' : 'right'))
                         .addClass('bs-number-incremented')
                         .on('change.bs-number-incrementer', function () {
                             if (input.data('widgetData').options.width_factor === 'dynamic') {
