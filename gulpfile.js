@@ -30,10 +30,11 @@
                 moduleSystem: 'iife'
             }))
             .pipe(plugins.addSrc.prepend('src/**/*.js'))
-            .pipe(plugins.concat('number-incrementer.bootstrap.js'))
             .pipe(plugins.injectVersion({
                 prepend: ''
             }))
+            .pipe(plugins.sourcemaps.init())
+            .pipe(plugins.concat('number-incrementer.bootstrap.js'))
             .pipe(gulp.dest('dist/'))
             .pipe(plugins.rename({
                 basename: "number-incrementer.bootstrap.min",
@@ -44,6 +45,7 @@
                     return (/@file/m).test(comment.value);
                 }
             }))
+            .pipe(plugins.sourcemaps.write('maps'))
             .pipe(gulp.dest('dist/'));
     });
 
