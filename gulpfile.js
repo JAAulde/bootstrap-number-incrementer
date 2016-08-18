@@ -16,10 +16,6 @@
             .pipe(plugins.jslint.reporter('default'));
     });
 
-    gulp.task('watch', function () {
-        gulp.watch('src/**/*.js', ['js']);
-    });
-
     gulp.task('build', ['clean', 'lint'], function () {
         return gulp
             .src('src/**/*.html')
@@ -49,6 +45,10 @@
                 }
             }))
             .pipe(gulp.dest('dist/'));
+    });
+
+    gulp.task('watch', function () {
+        gulp.watch(['src/**/*.js', 'src/**/*.html'], ['build']);
     });
 
     gulp.task('default', ['build', 'watch']);
