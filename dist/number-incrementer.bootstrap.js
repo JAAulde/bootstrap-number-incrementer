@@ -8,8 +8,8 @@
  * @copyright Jim Auldridge <auldridgej@gmail.com> 2016
  * @license MIT
  * @see {@link https://github.com/JAAulde/bootstrap-number-incrementer|GitHub Repository}
- * @see {@link http://getbootstrap.com/javascript/#modals|Bootstrap Modal}
- * @see {@link https://api.jquery.com/category/deferred-object/|jQuery deferred}
+ * @see {@link http://getbootstrap.com/|Bootstrap}
+ * @see {@link https://jquery.com/|jQuery}
  */
 (function (context) {
     'use strict';
