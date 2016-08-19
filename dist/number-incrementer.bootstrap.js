@@ -103,9 +103,9 @@
                 var input = $(this);
 
                 if (args[1] === true) {
-                    buttonEnablement(input);
+                    jQProp.apply(input.closest('div.' + consts.CLASS_NAME_WRAPPER).find('button'), args);
                 } else {
-                    $.fn.prop.apply(input.closest('div.' + consts.CLASS_NAME_WRAPPER).find('button'), args);
+                    buttonEnablement(input);
                 }
             });
         }
