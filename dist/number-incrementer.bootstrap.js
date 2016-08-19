@@ -19,6 +19,9 @@
         template_manager = context.template_manager,
         jQProp = $.fn.prop,
         jQAttr = $.fn.attr,
+        defaults = {
+            width_factor: 'dynamic' // 'range', 'dynamic', ALL OTHER
+        },
         consts = {
             CLASS_NAME_INPUT: 'bs-number-incremented',
             CLASS_NAME_WRAPPER: 'bs-number-incrementer',
@@ -58,8 +61,34 @@
             //  style it yourself externally
             }
         },
-        defaults = {
-            width_factor: 'range' // 'range', 'dynamic', ALL OTHER
+        buttonEnablement = function (input) {
+            var val = parseInt(input.val(), 10),
+                min,
+                max,
+                disable_selectors = [],
+                buttons;
+
+            if (!isNaN(val)) {
+                min = parseInt(input.attr('min'), 10);
+
+                if (!isNaN(min) && val <= min) {
+                    disable_selectors.push('button[data-operation="decrement"]');
+                }
+
+                max = parseInt(input.attr('max'), 10);
+
+                if (!isNaN(max) && val >= max) {
+                    disable_selectors.push('button[data-operation="increment"]');
+                }
+            }
+
+            buttons = input.closest('div.' + consts.CLASS_NAME_WRAPPER).find('button')
+                .prop('disabled', false);
+
+            if (disable_selectors.length) {
+                buttons.filter(disable_selectors.join(', '))
+                    .prop('disabled', true);
+            }
         };
 
     $.fn.prop = function () {
@@ -68,7 +97,12 @@
         if (args.length === 2 && args[0] === 'disabled') {
             this.filter('input.' + consts.CLASS_NAME_INPUT).each(function () {
                 var input = $(this);
-                $.fn.prop.apply(input.closest('div.' + consts.CLASS_NAME_WRAPPER).find('button'), args);
+
+                if (args[1] === true) {
+                    buttonEnablement(input);
+                } else {
+                    $.fn.prop.apply(input.closest('div.' + consts.CLASS_NAME_WRAPPER).find('button'), args);
+                }
             });
         }
 
@@ -200,6 +234,8 @@
                             if (input.data(consts.DATA_PROPERTY_WIDGET_DATA).options.width_factor === 'dynamic') {
                                 setWrapperWidth(input.closest('div.' + consts.CLASS_NAME_WRAPPER));
                             }
+
+                            buttonEnablement(input);
                         })
                         .data(consts.DATA_PROPERTY_WIDGET_DATA, widgetData);
 
