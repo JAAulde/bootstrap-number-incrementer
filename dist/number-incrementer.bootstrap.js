@@ -119,8 +119,14 @@
 
         if (args.length === 2 && (['min', 'max']).indexOf(args[0]) > -1) {
             this.filter('input.' + consts.CLASS_NAME_INPUT).each(function () {
-                var input = $(this);
-                setWrapperWidth(input.closest('div.' + consts.CLASS_NAME_WRAPPER));
+                var input = $(this),
+                    widgetData = input.data(consts.DATA_PROPERTY_WIDGET_DATA);
+
+                buttonEnablement(input);
+
+                if (widgetData.options.width_factor === 'range') {
+                    setWrapperWidth(input.closest('div.' + consts.CLASS_NAME_WRAPPER));
+                }
             });
         }
 
@@ -248,6 +254,8 @@
                             buttonEnablement(input);
                         })
                         .data(consts.DATA_PROPERTY_WIDGET_DATA, widgetData);
+
+                    buttonEnablement(input);
 
                     setWrapperWidth(wrapper);
 
