@@ -4,7 +4,7 @@
  * @file A jQuery/Boostrap based widget for use on text and number inputs to
  *       turn them into Bootstrap input groups with plus and minus buttons for
  *       incrementing and decrementing the input's numeric value.
- * @version 1.0.0
+ * @version %%GULP_INJECT_VERSION%%
  * @copyright Jim Auldridge <auldridgej@gmail.com> 2016
  * @license MIT
  * @see {@link https://github.com/JAAulde/bootstrap-number-incrementer|GitHub Repository}
