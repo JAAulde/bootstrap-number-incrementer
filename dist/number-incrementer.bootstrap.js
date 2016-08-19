@@ -20,7 +20,11 @@
         jQProp = $.fn.prop,
         jQAttr = $.fn.attr,
         defaults = {
-            width_factor: 'dynamic' // 'range', 'dynamic', ALL OTHER
+            width_factor: 'dynamic', // 'range', 'dynamic', ALL OTHER,
+            wrapper_class: null,
+            input_class: null,
+            incrementer_class: null,
+            decrementer_class: null
         },
         consts = {
             CLASS_NAME_INPUT: 'bs-number-incremented',
@@ -72,13 +76,13 @@
                 min = parseInt(input.attr('min'), 10);
 
                 if (!isNaN(min) && val <= min) {
-                    disable_selectors.push('button[data-operation="decrement"]');
+                    disable_selectors.push('[data-operation="decrement"]');
                 }
 
                 max = parseInt(input.attr('max'), 10);
 
                 if (!isNaN(max) && val >= max) {
-                    disable_selectors.push('button[data-operation="increment"]');
+                    disable_selectors.push('[data-operation="increment"]');
                 }
             }
 
@@ -181,6 +185,7 @@
             this.filter('input.' + consts.CLASS_NAME_INPUT).each(function () {
                 var input = $(this),
                     widgetData = input.data(consts.DATA_PROPERTY_WIDGET_DATA),
+                    options = widgetData.options,
                     $m,
                     p;
 
@@ -196,6 +201,10 @@
                     }
                 }
 
+                if (options.input_class) {
+                    input.removeClass(options.input_class);
+                }
+
                 input
                     .off('change.' + consts.NAMESPACE_EVENTS)
                     .removeData(consts.DATA_PROPERTY_WIDGET_DATA)
@@ -209,6 +218,7 @@
                 .each(function () {
                     var input = $(this),
                         wrapper = getWrapper(),
+                        buttons,
                         widgetData = {
                             originals: {
                                 attr: {
@@ -241,7 +251,7 @@
 
                     setWrapperWidth(wrapper);
 
-                    wrapper.find('button[data-operation]')
+                    buttons = wrapper.find('button[data-operation]')
                         .on('click', function () {
                             var operation = $(this).data('operation');
 
@@ -249,6 +259,24 @@
                                 input.numberIncrementer(operation);
                             }
                         });
+
+                    if (options.input_class) {
+                        input.addClass(options.input_class);
+                    }
+
+                    if (options.wrapper_class) {
+                        wrapper.addClass(options.wrapper_class);
+                    }
+
+                    if (options.incrementer_class) {
+                        buttons.filter('[data-operation="increment"]')
+                            .addClass(options.incrementer_class);
+                    }
+
+                    if (options.decrementer_class) {
+                        buttons.filter('[data-operation="decrement"]')
+                            .addClass(options.decrementer_class);
+                    }
                 });
             break;
         }
