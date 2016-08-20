@@ -25,3 +25,4 @@ Download the code, link it in your HTML file (after [dependencies](#dependencies
 ````html
 <script src="/path/to/bootstrap-number-incrementer"></script>
 ````
+
