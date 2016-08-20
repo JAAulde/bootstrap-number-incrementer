@@ -26,3 +26,9 @@ Download the code, link it in your HTML file (after [dependencies](#dependencies
 <script src="/path/to/bootstrap-number-incrementer"></script>
 ````
 
+## usage
+###options
+
+|Option|Description|Default|Note|
+|:-----|:----------|:------|:---|
+|`width_factor`     |How to maintain the width of the widget.|`'dynamic'`|`dynamic` changes the width as the length of the input's value changes, and center-aligns the text. `range` sets the width based on the maximum possible length of value (determined by the input's `min` and `max` attributes) and right-aligns the text. Any other value tells the widget to avoid dealing with width (you can control it yourself by CSS or other means).|
