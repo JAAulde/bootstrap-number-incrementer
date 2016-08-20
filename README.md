@@ -2,6 +2,8 @@
 
 A jQuery/Boostrap based widget for use on text and number inputs to turn them into Bootstrap input groups with plus and minus buttons for incrementing and decrementing the input's numeric value.
 
+![screenshot](https://jaaulde.com/docs/bootstrap-number-incrementer/images/screenshot_1.png)
+
 ## dependencies
  * [jquery](https://jquery.com) _1.9.1_ - _3_
  * [bootstrap](https://getbootstrap.com) _~3.3.7_
