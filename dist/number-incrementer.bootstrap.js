@@ -191,7 +191,6 @@
             this.filter('input.' + consts.CLASS_NAME_INPUT).each(function () {
                 var input = $(this),
                     widgetData = input.data(consts.DATA_PROPERTY_WIDGET_DATA),
-                    options = widgetData.options,
                     $m,
                     p;
 
@@ -207,14 +206,9 @@
                     }
                 }
 
-                if (options.input_class) {
-                    input.removeClass(options.input_class);
-                }
-
                 input
                     .off('change.' + consts.NAMESPACE_EVENTS)
-                    .removeData(consts.DATA_PROPERTY_WIDGET_DATA)
-                    .removeClass(consts.CLASS_NAME_INPUT);
+                    .removeData(consts.DATA_PROPERTY_WIDGET_DATA);
             });
             break;
         default:
@@ -228,7 +222,8 @@
                         widgetData = {
                             originals: {
                                 attr: {
-                                    type: input.attr('type')
+                                    type: input.attr('type'),
+                                    "class": input.attr('class') || ''
                                 },
                                 css: {
                                     "text-align": (input.css('text-align') || 'start')
@@ -245,7 +240,7 @@
                         .prop('disabled', input.prop('disabled'))
                         .attr('type', 'text')
                         .css('text-align', (options.width_factor === 'dynamic' ? 'center' : 'right'))
-                        .addClass(consts.CLASS_NAME_INPUT)
+                        .addClass(consts.CLASS_NAME_INPUT + ' form-control')
                         .on('change.' + consts.NAMESPACE_EVENTS, function () {
                             if (input.data(consts.DATA_PROPERTY_WIDGET_DATA).options.width_factor === 'dynamic') {
                                 setWrapperWidth(input.closest('div.' + consts.CLASS_NAME_WRAPPER));
