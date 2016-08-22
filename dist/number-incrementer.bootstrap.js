@@ -66,37 +66,45 @@
             }
         },
         buttonEnablement = function (input) {
-            var val = parseInt(input.val(), 10),
+            var buttons = input.closest('div.' + consts.CLASS_NAME_WRAPPER).find('button'),
+                is_input_disabled = input.prop('disabled'),
+                val,
                 min,
                 max,
-                disable_selectors = [],
-                buttons;
+                disable_selectors;
 
-            if (!isNaN(val)) {
-                min = parseInt(input.attr('min'), 10);
+            buttons.prop('disabled', buttons.prop('disabled', true));
 
-                if (!isNaN(min) && val <= min) {
-                    disable_selectors.push('[data-operation="decrement"]');
+            if (!is_input_disabled) {
+                buttons.prop('disabled', false);
+
+                val = parseInt(input.val(), 10);
+                disable_selectors = [];
+
+                if (!isNaN(val)) {
+                    min = parseInt(input.attr('min'), 10);
+
+                    if (!isNaN(min) && val <= min) {
+                        disable_selectors.push('[data-operation="decrement"]');
+                    }
+
+                    max = parseInt(input.attr('max'), 10);
+
+                    if (!isNaN(max) && val >= max) {
+                        disable_selectors.push('[data-operation="increment"]');
+                    }
                 }
 
-                max = parseInt(input.attr('max'), 10);
-
-                if (!isNaN(max) && val >= max) {
-                    disable_selectors.push('[data-operation="increment"]');
+                if (disable_selectors.length) {
+                    buttons.filter(disable_selectors.join(', '))
+                        .prop('disabled', true);
                 }
-            }
-
-            buttons = input.closest('div.' + consts.CLASS_NAME_WRAPPER).find('button')
-                .prop('disabled', false);
-
-            if (disable_selectors.length) {
-                buttons.filter(disable_selectors.join(', '))
-                    .prop('disabled', true);
             }
         };
 
     $.fn.prop = function () {
-        var args = arguments;
+        var args = arguments,
+            r = jQProp.apply(this, args);
 
         if (args.length === 2 && args[0] === 'disabled') {
             this.filter('input.' + consts.CLASS_NAME_INPUT).each(function () {
@@ -110,7 +118,7 @@
             });
         }
 
-        return jQProp.apply(this, args);
+        return r;
     };
 
     $.fn.attr = function () {
@@ -237,10 +245,9 @@
                     wrapper.find('span.bs-number-incremented-target:first').replaceWith(input);
 
                     input
-                        .prop('disabled', input.prop('disabled'))
+                        .addClass(consts.CLASS_NAME_INPUT + ' form-control')
                         .attr('type', 'text')
                         .css('text-align', (options.width_factor === 'dynamic' ? 'center' : 'right'))
-                        .addClass(consts.CLASS_NAME_INPUT + ' form-control')
                         .on('change.' + consts.NAMESPACE_EVENTS, function () {
                             if (input.data(consts.DATA_PROPERTY_WIDGET_DATA).options.width_factor === 'dynamic') {
                                 setWrapperWidth(input.closest('div.' + consts.CLASS_NAME_WRAPPER));
@@ -288,5 +295,5 @@
     };
 }(this));
 (function(){
-	template_manager.cache('partials/wrapper.html','<div class="bs-number-incrementer"><div class="input-group"><span class="input-group-btn"><button type="button" class="btn btn-default" data-operation="decrement"><span class="glyphicon glyphicon-minus"></span></button> </span><span class="bs-number-incremented-target"></span> <span class="input-group-btn"><button type="button" class="btn btn-default" data-operation="increment"><span class="glyphicon glyphicon-plus"></span></button></span></div></div>');
+	template_manager.cache('partials/wrapper.html','<div class="input-group bs-number-incrementer"><span class="input-group-btn"><button type="button" class="btn btn-default" data-operation="decrement"><span class="glyphicon glyphicon-minus"></span></button> </span><span class="bs-number-incremented-target"></span> <span class="input-group-btn"><button type="button" class="btn btn-default" data-operation="increment"><span class="glyphicon glyphicon-plus"></span></button></span></div>');
 })();
